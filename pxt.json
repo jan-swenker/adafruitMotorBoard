@@ -1,0 +1,25 @@
+{
+    "name": "UDriver_PCA9685",
+    "version": "0.0.0",
+    "description": "PCA9685 Driver for the Microbit",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*",
+        "radio": "*"
+    },
+    "files": [
+        "README.md",
+        "udriver_pca9685.cpp",
+        "udriver_pca9685.h",
+        "udriver_pca9685.ts",
+        "shims.d.ts",
+        "enums.d.ts"
+    ],
+    "testFiles": [
+        "utest/utest.h",
+        "utest/utest.c",
+        "test.cpp",
+        "test.ts"
+    ],
+    "public": false
+}

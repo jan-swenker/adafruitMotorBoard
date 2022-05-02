@@ -1,0 +1,59 @@
+===MicroDriver PCA9685===
+Design Specificiation
+
+[ABOUT]
+PCA9685 Driver for the MicroBit in the form of a library/makecode package.
+
+[DESIGN]
+Commication with the PCA9685 is done via i2c, All PCA9685 respond to thef
+i2c address 0xE0, hence unless given otherwise, that address would be the 
+default address used for communication with the PCA9685. 
+
+The PCA9685 uses a control register to address the rest of its many registers
+when writing to the PCA9685, the first byte  written to the PCA9685 would go
+into the control register, which would select which register the rest of the
+data goes to.
+
+The PCA9685 would be designed as an OOP api as the user may wish to 
+connect more than one PCA9685 - though a functional API may be used to simply
+the use of the library
+
+By default, the PCA9685 has 25 Mhz built in oscillator and a 200Hz PWM frequency
+Exposed API
+-----
+PCA9685(i2c address) - create PCA9685 object for i2c address - defaults to global 
+    LED all call address(see datasheet)
+digital_write(pin, 1 or 0)- digital write to the given GVS pin 
+digital_write( 1 or 0)- Same thing but for all GVS pins
+
+analog_write(pin, %duty_cycle) - write analog value from 0 to 1023 o the a set 
+    of GVS pins on the PCA9685 - analog is a value mapping to pwm write as 
+    makecode SHIM does not support floating point type mapping
+analog_write_all(pin, %duty_cycle) -Same thing but for all GVS pins
+
+pwm_write(pin, value) - PWM write value between 0 4095 to the pin on the PCA9685
+pwm_write_all(value) - Same thing but for all GVS pins
+==== Advanced ===== - API set as advanced in makecode
+set_pwm_frequency(hertz) - set PWM modulation frequency
+sleep() - activate low power sleep mode on the PCA9685. During this time PWM 
+control is not available as the oscillator is turned off
+wake() - activate low power sleep mode on the PCA9685
+software_reset() - make the PCA9685 do a software reset
+
+Internal Calls
+----
+configure_mode(setting, value) - configure the PCA9685 mode register's setting 
+    for the given value
+restore_mode() - restore previous mode, for operations that need to temporally
+    change the mode register during its operation
+register_write(reg, value) - write to the register on the PCA9685 given by 
+    address the value
+register_read(reg) - read value from the the register on the PCA9685 given.
+add_alt_address() - FUTURE fucntionality - add an additional sub addrsss 
+
+Servo Controller - used to control servos on the PCA9685 - subclass PCA9685
+-----
+move_servo(pin, angle_deg) - move the shaft of the servo on the given pin to
+    the given angle in degrees
+configure(pin, min, max) - configure the minmum and maximum pulses sent to
+    the servo on the given pin
